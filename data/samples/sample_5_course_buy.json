@@ -1,0 +1,21 @@
+{
+    "sample_id": 5,
+    "question": "Rs 2000 course konala vadda?",
+    "user_profile_ref": { "financial": "limited", "free_resources_available": true },
+    "note_point": "Idi Decision Support Tool matrame. Final decision neethi. Manam proofs istham, choose chesedi nuvve.",
+    "box_1_flrrc": {
+      "fact": "Course cost 2000, free resources available on YouTube/docs",
+      "logic": "Paid course = structured, free = time cost more",
+      "reasoning": "Financial limited ayithe free + discipline better",
+      "conclusion": "No buy, use free + build"
+    },
+    "box_2_equation": {
+      "formula": "Score = (Knowledge_Gain*0.4)+(Time_Saved*0.3)-(Money_Cost*0.3)",
+      "buy_score": "(8*0.4)+(7*0.3)-(8*0.3) = 3.2+2.1-2.4 = 2.9/10",
+      "free_score": "(7*0.4)+(4*0.3)-(1*0.3) = 2.8+1.2-0.3 = 3.7 -> with effort 6.8/10",
+      "regret": "Buy chesi chudakapothe 80% regret"
+    },
+    "box_3_graph": "Cost vs Value graph",
+    "box_4_risk": { "best": "2000 save + learn by building", "worst": "Money waste + not completed", "middle": "Buy only if 80% completion guarantee" },
+    "box_5_next_action": "Free roadmap create, 3 days try, still stuck ayithe course konudu"
+  }
