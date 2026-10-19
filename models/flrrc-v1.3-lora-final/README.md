@@ -2,208 +2,130 @@
 base_model: TinyLlama/TinyLlama-1.1B-Chat-v1.0
 library_name: peft
 pipeline_tag: text-generation
+license: mit
 tags:
-- base_model:adapter:TinyLlama/TinyLlama-1.1B-Chat-v1.0
 - lora
-- sft
-- transformers
-- trl
+- flrrc
+- decision-engine
+- telugu
+language:
+- en
+- te
 ---
 
-# Model Card for Model ID
+# FLRRC v1.3 LoRA - College Decision Engine
 
-<!-- Provide a quick summary of what the model is/does. -->
+Telugu + English college attendance decision assistant built with the FLRRC framework (Fact, Logic, Reasoning, Representation, Conclusion).
 
+**Try:** "College ki vellala vadda? Attendance 68%, energy low"
 
+> This is a Decision Support Tool only. The final decision is yours.
 
 ## Model Details
 
 ### Model Description
 
-<!-- Provide a longer summary of what this model is. -->
+TinyLlama-1.1B-Chat fine-tuned with QLoRA to produce structured, profile-aware college attendance decisions.
 
+- **Developed by:** Adhimulam Bhargav Sai Viswanath (bhargavsai2005)
+- **Model type:** Causal LM + LoRA adapter
+- **Language(s):** English, Telugu (code-mixed)
+- **License:** MIT
+- **Finetuned from:** TinyLlama/TinyLlama-1.1B-Chat-v1.0
 
+### Model Sources
 
-- **Developed by:** [More Information Needed]
-- **Funded by [optional]:** [More Information Needed]
-- **Shared by [optional]:** [More Information Needed]
-- **Model type:** [More Information Needed]
-- **Language(s) (NLP):** [More Information Needed]
-- **License:** [More Information Needed]
-- **Finetuned from model [optional]:** [More Information Needed]
-
-### Model Sources [optional]
-
-<!-- Provide the basic links for the model. -->
-
-- **Repository:** [More Information Needed]
-- **Paper [optional]:** [More Information Needed]
-- **Demo [optional]:** [More Information Needed]
+- **Repository:** https://github.com/AdhimulamBhargavSaiViswanath-05/flrrc-decision-engine
+- **Base model:** https://huggingface.co/TinyLlama/TinyLlama-1.1B-Chat-v1.0
+- **Demo:** `python3 src/inference.py`
 
 ## Uses
 
-<!-- Address questions around how the model is intended to be used, including the foreseeable users of the model and those affected by the model. -->
-
 ### Direct Use
 
-<!-- This section is for the model use without fine-tuning or plugging into a larger ecosystem/app. -->
+Ask college attendance questions, for example: `College ki vellala vadda? attendance 68%`
 
-[More Information Needed]
-
-### Downstream Use [optional]
-
-<!-- This section is for the model use when fine-tuned for a task, or when plugged into a larger ecosystem/app -->
-
-[More Information Needed]
+The FLRRC engine returns a 5-box decision: FLRRC Breakdown, Equation + Probability, Graph, Risk & Alternatives, Next Action.
 
 ### Out-of-Scope Use
 
-<!-- This section addresses misuse, malicious use, and uses that the model will not work well for. -->
+Not for medical or legal advice. Intended only for attendance-style personal decisions.
 
-[More Information Needed]
+## How to Get Started
 
-## Bias, Risks, and Limitations
+```python
+from peft import PeftModel
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
-<!-- This section is meant to convey both technical and sociotechnical limitations. -->
+base = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+adapter = "bhargavsai2005/flrrc-v1.3-lora"
 
-[More Information Needed]
+model = AutoModelForCausalLM.from_pretrained(base, device_map="auto", torch_dtype="float16")
+model = PeftModel.from_pretrained(model, adapter)
+model = model.merge_and_unload()
 
-### Recommendations
+tokenizer = AutoTokenizer.from_pretrained(base)
+pipe = pipeline(
+    "text-generation",
+    model=model,
+    tokenizer=tokenizer,
+    max_new_tokens=256,
+    do_sample=True,
+    temperature=0.7,
+    top_p=0.9,
+)
 
-<!-- This section is meant to convey recommendations with respect to the bias, risk, and technical limitations. -->
-
-Users (both direct and downstream) should be made aware of the risks, biases and limitations of the model. More information needed for further recommendations.
-
-## How to Get Started with the Model
-
-Use the code below to get started with the model.
-
-[More Information Needed]
+prompt = "<|user|>\nCollege ki vellala vadda? attendance 68%\n<|assistant|>\n"
+print(pipe(prompt)[0]["generated_text"])
+```
 
 ## Training Details
 
 ### Training Data
 
-<!-- This should link to a Dataset Card, perhaps with a short stub of information on what the training data is all about as well as documentation related to data pre-processing or additional filtering. -->
-
-[More Information Needed]
+100 samples in ChatML format (`data/training/chatml.jsonl`), generated from user profiles with attendance %, energy, health and subject importance.
 
 ### Training Procedure
 
-<!-- This relates heavily to the Technical Specifications. Content here should link to that section when it is relevant to the training procedure. -->
-
-#### Preprocessing [optional]
-
-[More Information Needed]
-
+QLoRA fine-tuning on a Google Colab T4 GPU (see `notebooks/flrrc.ipynb`).
 
 #### Training Hyperparameters
 
-- **Training regime:** [More Information Needed] <!--fp32, fp16 mixed precision, bf16 mixed precision, bf16 non-mixed precision, fp16 non-mixed precision, fp8 mixed precision -->
+- **Quantization:** 4-bit (nf4), fp16 compute
+- **LoRA:** r=8, alpha=16, dropout=0.05
+- **Target modules:** q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj
+- **Epochs:** 3
 
-#### Speeds, Sizes, Times [optional]
+#### Results
 
-<!-- This section provides information about throughput, start/end time, checkpoint size if relevant, etc. -->
-
-[More Information Needed]
+- **Logged training loss:** 2.54 (step 10), 2.44 (step 20), 2.34 (step 30)
+- **Adapter size:** about 12 MB
 
 ## Evaluation
 
-<!-- This section describes the evaluation protocols and provides the results. -->
-
-### Testing Data, Factors & Metrics
-
-#### Testing Data
-
-<!-- This should link to a Dataset Card if possible. -->
-
-[More Information Needed]
-
-#### Factors
-
-<!-- These are the things the evaluation is disaggregating by, e.g., subpopulations or domains. -->
-
-[More Information Needed]
-
-#### Metrics
-
-<!-- These are the evaluation metrics being used, ideally with a description of why. -->
-
-[More Information Needed]
-
-### Results
-
-[More Information Needed]
-
-#### Summary
-
-
-
-## Model Examination [optional]
-
-<!-- Relevant interpretability work for the model goes here -->
-
-[More Information Needed]
+No formal evaluation yet. Only informal manual testing was done.
 
 ## Environmental Impact
 
-<!-- Total emissions (in grams of CO2eq) and additional considerations, such as electricity usage, go here. Edit the suggested text below accordingly -->
+- **Hardware:** NVIDIA T4 (Google Colab)
+- **Cloud provider:** Google Colab
 
-Carbon emissions can be estimated using the [Machine Learning Impact calculator](https://mlco2.github.io/impact#compute) presented in [Lacoste et al. (2019)](https://arxiv.org/abs/1910.09700).
+## Technical Specifications
 
-- **Hardware Type:** [More Information Needed]
-- **Hours used:** [More Information Needed]
-- **Cloud Provider:** [More Information Needed]
-- **Compute Region:** [More Information Needed]
-- **Carbon Emitted:** [More Information Needed]
+TinyLlama-1.1B decoder with LoRA adapters on attention and MLP layers.
 
-## Technical Specifications [optional]
+## Citation
 
-### Model Architecture and Objective
+```bibtex
+@misc{flrrc-v1.3-lora,
+  author = {Adhimulam Bhargav Sai Viswanath},
+  title = {FLRRC v1.3 LoRA - Decision Engine},
+  year = {2026},
+  publisher = {Hugging Face},
+  url = {https://huggingface.co/bhargavsai2005/flrrc-v1.3-lora}
+}
+```
 
-[More Information Needed]
+## More Information
 
-### Compute Infrastructure
-
-[More Information Needed]
-
-#### Hardware
-
-[More Information Needed]
-
-#### Software
-
-[More Information Needed]
-
-## Citation [optional]
-
-<!-- If there is a paper or blog post introducing the model, the APA and Bibtex information for that should go in this section. -->
-
-**BibTeX:**
-
-[More Information Needed]
-
-**APA:**
-
-[More Information Needed]
-
-## Glossary [optional]
-
-<!-- If relevant, include terms and calculations in this section that can help readers understand the model or model card. -->
-
-[More Information Needed]
-
-## More Information [optional]
-
-[More Information Needed]
-
-## Model Card Authors [optional]
-
-[More Information Needed]
-
-## Model Card Contact
-
-[More Information Needed]
-### Framework versions
-
-- PEFT 0.21.2
+GitHub: https://github.com/AdhimulamBhargavSaiViswanath-05/flrrc-decision-engine
