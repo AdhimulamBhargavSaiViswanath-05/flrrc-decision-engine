@@ -218,3 +218,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+models/*.bin
+models/*.safetensors
+models/flrrc-v1.3-lora/
+*.zip
