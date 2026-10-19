@@ -1,0 +1,21 @@
+{
+    "sample_id": 4,
+    "question": "AI/ML nerchukovala leka Web Dev na?",
+    "user_profile_ref": { "goal": "Own product FLRRC", "time": "4-1 final year", "interest": "AI" },
+    "note_point": "Idi Decision Support Tool matrame. Final decision neethi. Manam proofs istham, choose chesedi nuvve.",
+    "box_1_flrrc": {
+      "fact": "Own product FLRRC is AI product, Web Dev is support skill",
+      "logic": "Core goal ki direct help ayyedi AI, Web Dev is wrapper",
+      "reasoning": "Final year lo depth > breadth",
+      "conclusion": "AI 70% + Web Dev 30%"
+    },
+    "box_2_equation": {
+      "formula": "Score = (Goal_Alignment*0.5)+(Market_Value*0.3)-(Time_Cost*0.2)",
+      "ai_score": "(10*0.5)+(9*0.3)-(6*0.2) = 5+2.7-1.2 = 6.5/10",
+      "web_score": "(6*0.5)+(7*0.3)-(4*0.2) = 3+2.1-0.8 = 4.3/10",
+      "regret": "AI vadileste 70% regret, Web Dev vadileste 30% only"
+    },
+    "box_3_graph": "Pie chart: AI 70%, Web 30% + Risk-Reward graph",
+    "box_4_risk": { "best": "AI product ready + basic UI", "worst": "Both half knowledge", "middle": "AI core strong, Web basic" },
+    "box_5_next_action": "Next 7 days: Llama fine-tune tutorial + FastAPI basics"
+  }

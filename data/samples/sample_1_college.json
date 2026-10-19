@@ -1,0 +1,31 @@
+{
+    "sample_id": 1,
+    "question": "College ki vellala vadda?",
+    "user_profile_ref": {
+      "attendance": "68%",
+      "subject_importance": "High (Lab)",
+      "energy": "4/10",
+      "tiredness": "7/10"
+    },
+    "note_point": "Idi Decision Support Tool matrame. Final decision neethi. Manam proofs istham, choose chesedi nuvve.",
+    "box_1_flrrc": {
+      "fact": "Attendance 68% (below 75%), Today subject is important Lab, Energy low 4/10",
+      "logic": "Attendance <75% ante condonation fee + risk. Important Lab ante miss ayithe backlogs or re-do",
+      "reasoning": "Short term tiredness vs Long term attendance loss. Long term important",
+      "representation": "Risk vs Reward bar chart",
+      "conclusion": "Velladam better, middle path undi"
+    },
+    "box_2_equation": {
+      "formula": "Score = (Importance*0.5)+(Attendance_Risk*0.3)-(Tiredness*0.2)",
+      "go_score": "Go = (9*0.5)+(8*0.3)-(7*0.2) = 4.5+2.4-1.4 = 5.5/10",
+      "nogo_score": "NoGo = (2*0.5)+(3*0.3)-(2*0.2) = 1+0.9-0.4 = 1.5/10",
+      "regret_probability": "NoGo regret 75% (attendance tension), Go regret 20% (tiredness only)"
+    },
+    "box_3_graph": "Bar chart: Go 5.5 vs NoGo 1.5. Attendance risk high",
+    "box_4_risk": {
+      "best": "Lab complete + attendance improve to 69%",
+      "worst": "Full day tired but lab missed if not go",
+      "middle": "Velli lab attend ayyi, afternoon permission teeskoni rest"
+    },
+    "box_5_next_action": "Immediate: Velli, 1st half lab complete chey, tarvata HOD ki health reason cheppi half day"
+  }

@@ -1,0 +1,40 @@
+{
+    "sample_id": 2,
+    "question": "Paytm 6 months unpaid WFO Bengaluru internship vellala vadda? 4-1 in 1 week starts.",
+    "user_profile_ref": {
+      "year": "4-1 starting in 1 week",
+      "internship": "Paytm 6M unpaid WFO Bengaluru",
+      "college_permission": "unknown",
+      "financial_support": "unknown (1.2L for 6M)",
+      "ppo": "unknown",
+      "attendance": "68%",
+      "goal": "Placement + Product"
+    },
+    "note_point": "Idi Decision Support Tool matrame. Final decision neethi. Manam proofs istham, choose chesedi nuvve.",
+    "box_1_flrrc": {
+      "fact": "Unpaid, WFO, Bengaluru, 6 Months, 4-1 starts now, Attendance 68%, Paytm brand big",
+      "logic": "Unpaid + WFO + 6M = High Cost + High Risk. PPO lekapothe CV value only. College permission lekunte degree risk",
+      "reasoning": "Brand big but unpaid long term without PPO = exploitation risk. 4-1 is crucial for placements",
+      "representation": "Decision matrix: Cost vs Brand vs PPO vs Degree Risk",
+      "conclusion": "Incomplete info. If no PPO and no stipend, NoGo score high. If PPO, Go."
+    },
+    "box_2_equation": {
+      "formula": "Score = (Brand*0.2)+(Learning*0.25)+(PPO_Chance*0.35)-(Cost*0.2)",
+      "assumptions": "Assume PPO unknown = 2/10, Cost high = 9/10",
+      "go_score": "Go = (8*0.2)+(7*0.25)+(2*0.35)-(9*0.2) = 1.6+1.75+0.7-1.8 = 2.25/10 -> But if PPO exists (8/10), Go = 1.6+1.75+2.8-1.8 = 4.35 + brand boost = 4.85/10",
+      "nogo_score": "NoGo (Stay for 4-1 + placements + build FLRRC) = (3*0.2)+(8*0.25)+(7*0.35)-(2*0.2) = 0.6+2+2.45-0.4 = 4.65/10 ~ 4.55 after tuning",
+      "regret_probability": "Go with unpaid no PPO -> 75% regret. NoGo if PPO was there -> 60% regret. So PPO clarity must"
+    },
+    "box_3_graph": "Comparison: Go 4.85 vs NoGo 4.55 (tie). If PPO true, Go jumps to 7.5. Pie chart of Cost 1.2L breakdown",
+    "box_4_risk": {
+      "best": "PPO + Learning + Paytm brand",
+      "worst": "6M unpaid + No PPO + 4-1 attendance loss + 1.2L expense + Own product FLRRC delayed by 6M",
+      "middle": "Negotiate: 3M WFO + 3M WFH or Stipend 15k or College credits. Or Ask for 2M internship only"
+    },
+    "box_5_next_action": "Immediate (Today): Call HR - 3 questions: 1) PPO possibility? 2) Stipend possible? 3) Can it be 3M? Also ask college HOD for internship permission letter. Don't say yes until these 3 answers.",
+    "box_6_context_questions": {
+      "q1": "College lo internship permission isthara 4-1 lo? (Credits?)",
+      "q2": "Family 1.2L (rent+food) 6 months support cheyagalara?",
+      "q3": "Paytm HR PPO isthara ani cheppara?"
+    }
+  }

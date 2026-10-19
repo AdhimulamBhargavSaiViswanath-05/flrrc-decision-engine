@@ -1,0 +1,140 @@
+{
+    "sample_id": 1,
+    "question": "College ki vellala vadda?",
+    "user_profile_ref": {
+      "attendance": "68%",
+      "subject_importance": "High (Lab)",
+      "energy": "4/10",
+      "tiredness": "7/10"
+    },
+    "note_point": "Idi Decision Support Tool matrame. Final decision neethi. Manam proofs istham, choose chesedi nuvve.",
+    "box_1_flrrc": {
+      "fact": "Attendance 68% (below 75%), Today subject is important Lab, Energy low 4/10",
+      "logic": "Attendance <75% ante condonation fee + risk. Important Lab ante miss ayithe backlogs or re-do",
+      "reasoning": "Short term tiredness vs Long term attendance loss. Long term important",
+      "representation": "Risk vs Reward bar chart",
+      "conclusion": "Velladam better, middle path undi"
+    },
+    "box_2_equation": {
+      "formula": "Score = (Importance*0.5)+(Attendance_Risk*0.3)-(Tiredness*0.2)",
+      "go_score": "Go = (9*0.5)+(8*0.3)-(7*0.2) = 4.5+2.4-1.4 = 5.5/10",
+      "nogo_score": "NoGo = (2*0.5)+(3*0.3)-(2*0.2) = 1+0.9-0.4 = 1.5/10",
+      "regret_probability": "NoGo regret 75% (attendance tension), Go regret 20% (tiredness only)"
+    },
+    "box_3_graph": "Bar chart: Go 5.5 vs NoGo 1.5. Attendance risk high",
+    "box_4_risk": {
+      "best": "Lab complete + attendance improve to 69%",
+      "worst": "Full day tired but lab missed if not go",
+      "middle": "Velli lab attend ayyi, afternoon permission teeskoni rest"
+    },
+    "box_5_next_action": "Immediate: Velli, 1st half lab complete chey, tarvata HOD ki health reason cheppi half day"
+  }{
+    "sample_id": 2,
+    "question": "Paytm 6 months unpaid WFO Bengaluru internship vellala vadda? 4-1 in 1 week starts.",
+    "user_profile_ref": {
+      "year": "4-1 starting in 1 week",
+      "internship": "Paytm 6M unpaid WFO Bengaluru",
+      "college_permission": "unknown",
+      "financial_support": "unknown (1.2L for 6M)",
+      "ppo": "unknown",
+      "attendance": "68%",
+      "goal": "Placement + Product"
+    },
+    "note_point": "Idi Decision Support Tool matrame. Final decision neethi. Manam proofs istham, choose chesedi nuvve.",
+    "box_1_flrrc": {
+      "fact": "Unpaid, WFO, Bengaluru, 6 Months, 4-1 starts now, Attendance 68%, Paytm brand big",
+      "logic": "Unpaid + WFO + 6M = High Cost + High Risk. PPO lekapothe CV value only. College permission lekunte degree risk",
+      "reasoning": "Brand big but unpaid long term without PPO = exploitation risk. 4-1 is crucial for placements",
+      "representation": "Decision matrix: Cost vs Brand vs PPO vs Degree Risk",
+      "conclusion": "Incomplete info. If no PPO and no stipend, NoGo score high. If PPO, Go."
+    },
+    "box_2_equation": {
+      "formula": "Score = (Brand*0.2)+(Learning*0.25)+(PPO_Chance*0.35)-(Cost*0.2)",
+      "assumptions": "Assume PPO unknown = 2/10, Cost high = 9/10",
+      "go_score": "Go = (8*0.2)+(7*0.25)+(2*0.35)-(9*0.2) = 1.6+1.75+0.7-1.8 = 2.25/10 -> But if PPO exists (8/10), Go = 1.6+1.75+2.8-1.8 = 4.35 + brand boost = 4.85/10",
+      "nogo_score": "NoGo (Stay for 4-1 + placements + build FLRRC) = (3*0.2)+(8*0.25)+(7*0.35)-(2*0.2) = 0.6+2+2.45-0.4 = 4.65/10 ~ 4.55 after tuning",
+      "regret_probability": "Go with unpaid no PPO -> 75% regret. NoGo if PPO was there -> 60% regret. So PPO clarity must"
+    },
+    "box_3_graph": "Comparison: Go 4.85 vs NoGo 4.55 (tie). If PPO true, Go jumps to 7.5. Pie chart of Cost 1.2L breakdown",
+    "box_4_risk": {
+      "best": "PPO + Learning + Paytm brand",
+      "worst": "6M unpaid + No PPO + 4-1 attendance loss + 1.2L expense + Own product FLRRC delayed by 6M",
+      "middle": "Negotiate: 3M WFO + 3M WFH or Stipend 15k or College credits. Or Ask for 2M internship only"
+    },
+    "box_5_next_action": "Immediate (Today): Call HR - 3 questions: 1) PPO possibility? 2) Stipend possible? 3) Can it be 3M? Also ask college HOD for internship permission letter. Don't say yes until these 3 answers.",
+    "box_6_context_questions": {
+      "q1": "College lo internship permission isthara 4-1 lo? (Credits?)",
+      "q2": "Family 1.2L (rent+food) 6 months support cheyagalara?",
+      "q3": "Paytm HR PPO isthara ani cheppara?"
+    }
+  }{
+    "sample_id": 3,
+    "question": "Gym ki vellala vadda?",
+    "user_profile_ref": {
+      "energy": "3/10",
+      "sleep": "5 hours",
+      "last_workout": "2 days ago",
+      "health": "normal tiredness"
+    },
+    "note_point": "Idi Decision Support Tool matrame. Final decision neethi. Manam proofs istham, choose chesedi nuvve.",
+    "box_1_flrrc": {
+      "fact": "Energy low (3/10), sleep less, goal weight loss",
+      "logic": "Energy <4 ante injury risk high, recovery important",
+      "reasoning": "Low energy lo intense workout cheste benefit kante risk ekkuva",
+      "representation": "Bar chart: Go vs Light vs Rest",
+      "conclusion": "Today Rest or Light walk better"
+    },
+    "box_2_equation": {
+      "formula": "Score = (Goal_Importance*0.4)+(Energy*0.4)-(Recovery_Risk*0.2)",
+      "go_score": "Score = (9*0.4)+(3*0.4)-(8*0.2) = 3.6+1.2-1.6 = 3.2/10",
+      "rest_score": "Score = (6*0.4)+(7*0.4)-(2*0.2) = 2.4+2.8-0.4 = 4.8/10 but with recovery = 7.5/10",
+      "regret_probability": "If go with low energy, 65% regret due to fatigue/injury"
+    },
+    "box_3_graph": "Bar chart - Go:3.2, Light Walk:6.5, Full Rest:7.5",
+    "box_4_risk": {
+      "best": "Routine maintain, energy boost tomorrow",
+      "worst": "Injury or full day waste due to tiredness",
+      "middle": "15 min stretching + 8hr sleep"
+    },
+    "box_5_next_action": "Today: Stretch at home, sleep early 10pm, tomorrow full workout"
+  }{
+    "sample_id": 4,
+    "question": "AI/ML nerchukovala leka Web Dev na?",
+    "user_profile_ref": { "goal": "Own product FLRRC", "time": "4-1 final year", "interest": "AI" },
+    "note_point": "Idi Decision Support Tool matrame. Final decision neethi. Manam proofs istham, choose chesedi nuvve.",
+    "box_1_flrrc": {
+      "fact": "Own product FLRRC is AI product, Web Dev is support skill",
+      "logic": "Core goal ki direct help ayyedi AI, Web Dev is wrapper",
+      "reasoning": "Final year lo depth > breadth",
+      "conclusion": "AI 70% + Web Dev 30%"
+    },
+    "box_2_equation": {
+      "formula": "Score = (Goal_Alignment*0.5)+(Market_Value*0.3)-(Time_Cost*0.2)",
+      "ai_score": "(10*0.5)+(9*0.3)-(6*0.2) = 5+2.7-1.2 = 6.5/10",
+      "web_score": "(6*0.5)+(7*0.3)-(4*0.2) = 3+2.1-0.8 = 4.3/10",
+      "regret": "AI vadileste 70% regret, Web Dev vadileste 30% only"
+    },
+    "box_3_graph": "Pie chart: AI 70%, Web 30% + Risk-Reward graph",
+    "box_4_risk": { "best": "AI product ready + basic UI", "worst": "Both half knowledge", "middle": "AI core strong, Web basic" },
+    "box_5_next_action": "Next 7 days: Llama fine-tune tutorial + FastAPI basics"
+  }{
+    "sample_id": 5,
+    "question": "Rs 2000 course konala vadda?",
+    "user_profile_ref": { "financial": "limited", "free_resources_available": true },
+    "note_point": "Idi Decision Support Tool matrame. Final decision neethi. Manam proofs istham, choose chesedi nuvve.",
+    "box_1_flrrc": {
+      "fact": "Course cost 2000, free resources available on YouTube/docs",
+      "logic": "Paid course = structured, free = time cost more",
+      "reasoning": "Financial limited ayithe free + discipline better",
+      "conclusion": "No buy, use free + build"
+    },
+    "box_2_equation": {
+      "formula": "Score = (Knowledge_Gain*0.4)+(Time_Saved*0.3)-(Money_Cost*0.3)",
+      "buy_score": "(8*0.4)+(7*0.3)-(8*0.3) = 3.2+2.1-2.4 = 2.9/10",
+      "free_score": "(7*0.4)+(4*0.3)-(1*0.3) = 2.8+1.2-0.3 = 3.7 -> with effort 6.8/10",
+      "regret": "Buy chesi chudakapothe 80% regret"
+    },
+    "box_3_graph": "Cost vs Value graph",
+    "box_4_risk": { "best": "2000 save + learn by building", "worst": "Money waste + not completed", "middle": "Buy only if 80% completion guarantee" },
+    "box_5_next_action": "Free roadmap create, 3 days try, still stuck ayithe course konudu"
+  }
