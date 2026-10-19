@@ -222,3 +222,7 @@ models/*.bin
 models/*.safetensors
 models/flrrc-v1.3-lora/
 *.zip
+
+# LoRA adapters - keep config only, model in HF/Drive
+models/flrrc-v1.3-lora-final/*.safetensors
+models/flrrc-v1.3-lora-final/*.bin
