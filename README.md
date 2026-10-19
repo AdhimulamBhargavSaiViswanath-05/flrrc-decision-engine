@@ -34,3 +34,12 @@ Every decision gives 5 Boxes:
 - [ ] 100 samples dataset
 - [ ] Engine + Graph
 - [ ] v1.0 Release
+
+## Demo Result - Paytm Case
+- **Question:** Paytm 6M unpaid WFO?
+- **Equation:** Go=4.25, NoGo=7.65
+- **Verdict:** NO-GO (unless PPO confirmed)
+- **Graph:** ![Paytm Graph](assets/graphs/paytm_test.png)
+
+## How to Run
+python src/engine.py
