@@ -14,10 +14,10 @@ const STEPS = [
 ]
 
 const EXAMPLES = [
-  'College ki vellala vadda? attendance 68%',
-  'Paytm 6 months unpaid internship vellala vadda? 4-1 starts in 1 week',
-  'Gym ki vellala vadda? energy low',
-  'Paid course konala vadda?',
+  'College ki vellala? (attendance 68%, exam in 10 days)',
+  'Paytm 6 months unpaid internship vellala vadda? (4-1 starts in 1 week)',
+  'Gym ki vellala? (energy 3/10, sleep 5 hrs, exam repu)',
+  'Paid course konala? (cost 4000, free alternatives available)',
 ]
 
 const HISTORY_KEY = 'flrrc-history-v1'
@@ -488,7 +488,7 @@ function App() {
                 onChange={onInput}
                 onKeyDown={onKeyDown}
                 rows={1}
-                placeholder="College ki vellala vadda? attendance 68%"
+                placeholder="Question + details in brackets: Gym ki vellala? (energy 3/10, sleep 5 hrs)"
                 className="flex-1 bg-transparent resize-none px-3 py-2.5 text-[15px] text-fg placeholder:text-dim max-h-44"
               />
               {busy ? (

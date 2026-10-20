@@ -66,6 +66,14 @@ export default function FlrrcBoxes({ data }) {
         </div>
       )}
 
+      {data._recalc?.changed && (
+        <p className="text-xs text-warn bg-warn/10 border border-warn/30 rounded-xl px-3 py-2 animate-fade-up">
+          {data._recalc.winnerFlipped
+            ? `The model's own total pointed the other way. Recalculated from its factors: Go ${data._recalc.computed.go} vs No-Go ${data._recalc.computed.nogo}. The conclusion text below was written by the model and may disagree. Decide with the numbers and your own judgement.`
+            : `Totals were recalculated from the model's own factors (Go ${data._recalc.computed.go}, No-Go ${data._recalc.computed.nogo}) because its arithmetic was off. The conclusion text is the model's and may not fully match.`}
+        </p>
+      )}
+
       <div className="grid md:grid-cols-2 gap-3">
         <Box icon={Lightbulb} title="1. FLRRC Breakdown" tone="text-cyan">
           <Row label="Fact" value={b1.fact} />
