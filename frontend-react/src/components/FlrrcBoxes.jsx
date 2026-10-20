@@ -1,5 +1,8 @@
 import { BarChart3, Calculator, Lightbulb, ShieldAlert, Target } from 'lucide-react'
 import { extractScore } from '../lib/parseDecision'
+import { buildFactors } from '../lib/decisionViz'
+import { FactorTable, FormulaView, LogicText, RepresentationText } from './Formula'
+import DecisionChart from './DecisionChart'
 
 function Box({ icon, title, tone, children, delay = 0 }) {
   const Icon = icon
@@ -17,54 +20,18 @@ function Box({ icon, title, tone, children, delay = 0 }) {
   )
 }
 
-function Row({ label, value }) {
-  if (!value) return null
+function Row({ label, value, children }) {
+  if (!value && !children) return null
   return (
     <div className="mb-2 last:mb-0">
       <p className="text-[11px] uppercase tracking-wider text-dim">{label}</p>
-      <p className="text-sm text-fg2 leading-relaxed">{value}</p>
-    </div>
-  )
-}
-
-// Vertical bar chart of the two scores (0-10 scale), drawn from the recalculated totals.
-function ScoreChart({ goScore, noGoScore, higher }) {
-  const bars = [
-    { key: 'Go', label: 'Go', value: goScore, color: 'bg-mint' },
-    { key: 'No-Go', label: 'No-Go', value: noGoScore, color: 'bg-violet' },
-  ]
-  const CHART_H = 140
-  return (
-    <div className="flex items-end justify-center gap-10 px-2 pt-2">
-      {bars.map((b) => {
-        const h = Math.max(4, Math.min(CHART_H, (b.value / 10) * CHART_H))
-        const winner = b.key === higher
-        return (
-          <div key={b.key} className="flex flex-col items-center w-20">
-            <span className={`font-mono text-sm mb-1 ${winner ? 'text-fg font-bold' : 'text-muted'}`}>
-              {b.value}
-            </span>
-            <div
-              className="w-full flex items-end border-b border-line"
-              style={{ height: CHART_H }}
-              role="img"
-              aria-label={`${b.label} score ${b.value} out of 10`}
-            >
-              <div
-                className={`w-full rounded-t-lg ${b.color} ${winner ? '' : 'opacity-60'} transition-all duration-700`}
-                style={{ height: h }}
-              />
-            </div>
-            <span className="text-xs text-fg2 mt-2">{b.label}</span>
-          </div>
-        )
-      })}
+      {children ?? <p className="text-sm text-fg2 leading-relaxed">{value}</p>}
     </div>
   )
 }
 
 // The model's graph text is "Bar chart: Go X vs NoGo Y. note". Its numbers can be wrong,
-// so when we draw the chart ourselves we only keep the note after the first sentence.
+// so once we draw the chart ourselves we only keep the note after the first sentence.
 function graphNote(text) {
   if (typeof text !== 'string') return ''
   if (!/^\s*bar chart/i.test(text)) return text
@@ -80,6 +47,8 @@ export default function FlrrcBoxes({ data }) {
   const noGoScore = extractScore(b2.nogo_score)
   const hasScores = goScore !== null && noGoScore !== null
   const higher = hasScores ? (goScore >= noGoScore ? 'Go' : 'No-Go') : null
+  const factors = buildFactors(b2)
+  const note = graphNote(data.box_3_graph)
 
   return (
     <div className="space-y-3">
@@ -107,31 +76,30 @@ export default function FlrrcBoxes({ data }) {
       <div className="grid md:grid-cols-2 gap-3">
         <Box icon={Lightbulb} title="1. FLRRC Breakdown" tone="text-cyan">
           <Row label="Fact" value={b1.fact} />
-          <Row label="Logic" value={b1.logic} />
+          <Row label="Logic">{b1.logic && <LogicText text={b1.logic} />}</Row>
           <Row label="Reasoning" value={b1.reasoning} />
-          <Row label="Representation" value={b1.representation} />
+          <Row label="Representation">{b1.representation && <RepresentationText text={b1.representation} />}</Row>
           <Row label="Conclusion" value={b1.conclusion} />
         </Box>
 
         <Box icon={Calculator} title="2. Equation" tone="text-azure" delay={80}>
-          {b2.formula && (
-            <p className="font-mono text-xs text-azure bg-inset rounded-lg p-2 mb-3 break-words">
-              {b2.formula}
-            </p>
+          <FormulaView text={b2.formula} />
+          {factors ? (
+            <FactorTable factors={factors} higher={higher} />
+          ) : (
+            <>
+              <Row label="Go score" value={b2.go_score} />
+              <Row label="No-Go score" value={b2.nogo_score} />
+            </>
           )}
-          <Row label="Go score" value={b2.go_score} />
-          <Row label="No-Go score" value={b2.nogo_score} />
           <Row label="Regret probability" value={b2.regret_probability} />
         </Box>
 
         <Box icon={BarChart3} title="3. Graph" tone="text-violet" delay={160}>
           {hasScores ? (
             <>
-              <ScoreChart goScore={goScore} noGoScore={noGoScore} higher={higher} />
-              <p className="text-[11px] text-dim text-center mt-3">Score out of 10, higher is better</p>
-              {graphNote(data.box_3_graph) && (
-                <p className="text-sm text-fg2 leading-relaxed mt-2">{graphNote(data.box_3_graph)}</p>
-              )}
+              <DecisionChart data={data} goScore={goScore} noGoScore={noGoScore} higher={higher} />
+              {note && <p className="text-sm text-fg2 leading-relaxed mt-3">{note}</p>}
             </>
           ) : (
             <p className="text-sm text-fg2 leading-relaxed">

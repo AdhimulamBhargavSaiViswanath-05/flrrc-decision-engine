@@ -2,8 +2,21 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { ArrowUp, Check, Copy, Menu, Plus, Moon, RotateCcw, Square, Sun, Trash2, X } from 'lucide-react'
 import { callModel } from './api'
 import AnswerBody from './components/AnswerBody'
+import FollowUpAnswer from './components/FollowUpAnswer'
+import { parseDecision } from './lib/parseDecision'
 
-const FOLLOW_UPS = ['Explain why', 'Show the risks', 'What is a middle option?']
+const FOLLOW_UPS = [
+  { id: 'why', label: 'Explain why' },
+  { id: 'risks', label: 'Show the risks' },
+  { id: 'middle', label: 'What is a middle option?' },
+]
+
+const AUTHOR = {
+  name: 'Adhimulam Bhargav Sai Viswanath',
+  github: 'https://github.com/AdhimulamBhargavSaiViswanath-05',
+  huggingface: 'https://huggingface.co/bhargavsai2005',
+  repo: 'https://github.com/AdhimulamBhargavSaiViswanath-05/flrrc-decision-engine',
+}
 
 const STEPS = [
   { key: 'F', name: 'Fact' },
@@ -87,7 +100,7 @@ function ActionButton({ onClick, title, children }) {
   )
 }
 
-function AnswerCard({ item, isLast, busy, onRetry, onFollowUp, onGrow }) {
+function AnswerCard({ item, busy, onRetry, onGrow }) {
   const [copied, setCopied] = useState(false)
 
   const copy = async () => {
@@ -127,7 +140,13 @@ function AnswerCard({ item, isLast, busy, onRetry, onFollowUp, onGrow }) {
           </div>
         )}
 
-        {item.status === 'done' && (
+        {item.status === 'done' && item.local && (
+          <div className="rounded-2xl rounded-tl-md bg-panel border border-line p-5">
+            <FollowUpAnswer kind={item.local} data={item.data} />
+          </div>
+        )}
+
+        {item.status === 'done' && !item.local && (
           <>
             <div className="rounded-2xl rounded-tl-md bg-panel border border-line p-5">
               <AnswerBody text={item.answer} animate={item.animate} onGrow={onGrow} />
@@ -144,20 +163,6 @@ function AnswerCard({ item, isLast, busy, onRetry, onFollowUp, onGrow }) {
                 POC model, scores and facts can be wrong. Final decision neethi.
               </span>
             </div>
-
-            {isLast && !busy && (
-              <div className="mt-3 flex flex-wrap gap-2">
-                {FOLLOW_UPS.map((f) => (
-                  <button
-                    key={f}
-                    onClick={() => onFollowUp(item.question, f)}
-                    className="px-3 py-1.5 rounded-full text-xs border border-line text-muted hover:border-cyan/50 hover:text-fg transition"
-                  >
-                    {f}
-                  </button>
-                ))}
-              </div>
-            )}
           </>
         )}
       </div>
@@ -211,6 +216,14 @@ function Hero({ onPick }) {
           </button>
         ))}
       </div>
+
+      <p className="mt-10 text-xs text-dim">
+        Designed and built by <span className="text-fg2 font-semibold">{AUTHOR.name}</span>
+        <span className="mx-2">·</span>
+        <a href={AUTHOR.github} target="_blank" rel="noreferrer" className="hover:text-cyan transition">GitHub</a>
+        <span className="mx-2">·</span>
+        <a href={AUTHOR.huggingface} target="_blank" rel="noreferrer" className="hover:text-cyan transition">Hugging Face</a>
+      </p>
     </div>
   )
 }
@@ -284,8 +297,24 @@ function App() {
     Object.values(controllers.current).forEach((c) => c.abort())
   }
 
-  const followUp = (question, extra) => {
-    if (!busy) run(`${question}. ${extra}`)
+  // The model answers one question at a time and has no memory, so these buttons read the
+  // latest decision on screen instead of sending a new request.
+  const lastDecision = [...items]
+    .reverse()
+    .find((i) => !i.local && i.status === 'done' && i.answer && parseDecision(i.answer))
+
+  const followUp = (f) => {
+    if (busy || !lastDecision) return
+    setItems((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        question: f.label,
+        status: 'done',
+        local: f.id,
+        data: parseDecision(lastDecision.answer),
+      },
+    ])
   }
 
   const scrollToEnd = useCallback(() => {
@@ -404,16 +433,33 @@ function App() {
           ))}
         </div>
 
-        <div className="p-4 border-t border-line text-xs text-dim space-y-1">
-          <a
-            href={MODEL_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="block hover:text-cyan transition"
-          >
-            TinyLlama 1.1B + LoRA adapter
-          </a>
-          <p>POC</p>
+        <div className="p-4 border-t border-line text-xs text-dim space-y-3">
+          <div>
+            <p className="text-[10px] uppercase tracking-widest">Designed and built by</p>
+            <p className="mt-0.5 text-sm font-semibold text-fg leading-snug">{AUTHOR.name}</p>
+            <div className="mt-1 flex gap-3">
+              <a href={AUTHOR.github} target="_blank" rel="noreferrer" className="hover:text-cyan transition">
+                GitHub
+              </a>
+              <a href={AUTHOR.huggingface} target="_blank" rel="noreferrer" className="hover:text-cyan transition">
+                Hugging Face
+              </a>
+              <a href={AUTHOR.repo} target="_blank" rel="noreferrer" className="hover:text-cyan transition">
+                Source
+              </a>
+            </div>
+          </div>
+          <div className="space-y-1">
+            <a
+              href={MODEL_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="block hover:text-cyan transition"
+            >
+              TinyLlama 1.1B + LoRA adapter
+            </a>
+            <p>POC</p>
+          </div>
         </div>
       </aside>
 
@@ -456,7 +502,7 @@ function App() {
             <Hero onPick={(q) => send(q)} />
           ) : (
             <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-6">
-              {items.map((item, idx) => (
+              {items.map((item) => (
                 <div key={item.id} className="space-y-4">
                   <div className="flex justify-end animate-fade-up">
                     <div className="max-w-[85%] rounded-2xl rounded-tr-md brand-gradient text-on-brand px-4 py-3 text-[15px] font-medium whitespace-pre-wrap shadow-lg shadow-black/10">
@@ -465,14 +511,30 @@ function App() {
                   </div>
                   <AnswerCard
                     item={item}
-                    isLast={idx === items.length - 1}
                     busy={busy}
                     onRetry={retry}
-                    onFollowUp={followUp}
                     onGrow={scrollToEnd}
                   />
                 </div>
               ))}
+              {!busy && lastDecision && items[items.length - 1]?.status === 'done' && (
+                <div className="pl-12 animate-fade-up">
+                  <div className="flex flex-wrap gap-2">
+                    {FOLLOW_UPS.map((f) => (
+                      <button
+                        key={f.id}
+                        onClick={() => followUp(f)}
+                        className="px-3 py-1.5 rounded-full text-xs border border-line text-muted hover:border-cyan/50 hover:text-fg transition"
+                      >
+                        {f.label}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="mt-2 text-[11px] text-dim">
+                    One question at a time: these read the result above. For a different question, type a new one or use New decision.
+                  </p>
+                </div>
+              )}
               <div ref={endRef} />
             </div>
           )}
