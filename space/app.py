@@ -5,7 +5,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel
 
 BASE = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
-LORA = "bhargavsai2005/flrrc-v1.4-lora"
+LORA = "bhargavsai2005/flrrc-lora"
 
 # Must match the v1.4 training prompt exactly (src/training/prepare_dataset.py SYSTEM_PROMPT_V14).
 SYSTEM_PROMPT = (
@@ -67,9 +67,9 @@ def decide(question):
 
 with gr.Blocks() as demo:
     gr.Markdown(
-        "# FLRRC Decision Engine v1.4\n"
+        "# FLRRC Decision Engine\n"
         "**Not a Chatbot. A Decision Calculator.**\n\n"
-        "POC v1.4 (TinyLlama 1.1B + LoRA, 75 samples). Output is JSON with 5 boxes. "
+        "POC (TinyLlama 1.1B + LoRA). Output is JSON with 5 boxes. "
         "Scores and facts can be wrong. Idi Decision Support Tool matrame. Final decision neethi."
     )
     inp = gr.Textbox(

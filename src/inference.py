@@ -4,12 +4,12 @@ from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 
-# Single source of truth for the v1.4 system prompt (same string the adapter was trained with).
+# Single source of truth for the system prompt (same string the current adapter was trained with).
 from src.training.prepare_dataset import SYSTEM_PROMPT_V14 as SYSTEM_PROMPT
 
 BASE = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
-HF_ADAPTER = "bhargavsai2005/flrrc-v1.4-lora"
-LOCAL_ADAPTER = "models/flrrc-v1.4-lora-final"
+HF_ADAPTER = "bhargavsai2005/flrrc-lora"
+LOCAL_ADAPTER = "models/flrrc-lora"
 
 # Override with FLRRC_ADAPTER=<local path or HF repo>. Default: local folder if it exists, else the HF repo.
 ADAPTER = os.environ.get("FLRRC_ADAPTER") or (LOCAL_ADAPTER if os.path.isdir(LOCAL_ADAPTER) else HF_ADAPTER)

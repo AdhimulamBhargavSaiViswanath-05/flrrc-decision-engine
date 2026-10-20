@@ -13,7 +13,7 @@ language:
 - te
 ---
 
-# FLRRC v1.4 LoRA - Decision Engine
+# FLRRC LoRA - Decision Engine (adapter v1.4)
 
 **Not a Chatbot. A Decision Calculator.**
 
@@ -29,7 +29,7 @@ A small LoRA adapter on TinyLlama-1.1B-Chat that turns a personal decision quest
 - **License:** MIT
 - **Finetuned from:** TinyLlama/TinyLlama-1.1B-Chat-v1.0
 - **Repository:** https://github.com/AdhimulamBhargavSaiViswanath-05/flrrc-decision-engine
-- **Demo (Space):** https://huggingface.co/spaces/bhargavsai2005/flrrc-v1.3
+- **Demo (Space):** https://huggingface.co/spaces/bhargavsai2005/flrrc-decision-engine
 
 ## Output format
 
@@ -55,7 +55,7 @@ from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 BASE = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
-ADAPTER = "bhargavsai2005/flrrc-v1.4-lora"
+ADAPTER = "bhargavsai2005/flrrc-lora"
 
 SYSTEM = (
     "You are FLRRC Decision Engine. Given a Question, output 5 boxes as JSON: "
@@ -128,11 +128,11 @@ No formal benchmark. Informal manual tests on a handful of questions (Colab and 
 ## Citation
 
 ```bibtex
-@misc{flrrc-v1.4-lora,
+@misc{flrrc-lora,
   author = {Adhimulam Bhargav Sai Viswanath},
-  title = {FLRRC v1.4 LoRA - Decision Engine},
+  title = {FLRRC LoRA - Decision Engine (adapter v1.4)},
   year = {2026},
   publisher = {Hugging Face},
-  url = {https://huggingface.co/bhargavsai2005/flrrc-v1.4-lora}
+  url = {https://huggingface.co/bhargavsai2005/flrrc-lora}
 }
 ```

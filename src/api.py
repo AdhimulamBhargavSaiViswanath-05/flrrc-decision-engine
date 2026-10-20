@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 from src.inference import ask, ADAPTER
 
-app = FastAPI(title="FLRRC Decision Engine v1.4")
+app = FastAPI(title="FLRRC Decision Engine")
 
 app.add_middleware(
     CORSMiddleware,
@@ -24,7 +24,7 @@ class Query(BaseModel):
 
 @app.get("/")
 def home():
-    return {"status": "FLRRC v1.4 Running", "model": ADAPTER}
+    return {"status": "FLRRC Running", "model": ADAPTER}
 
 
 @app.post("/decide")
@@ -37,6 +37,6 @@ def decide(q: Query):
     return {
         "query": question,
         "flrrc_decision": result,
-        "model": "v1.4-poc",
+        "model": "poc",
         "note": "POC model. Format is reliable, but scores/facts can be wrong. Scores are recalculated in the UI.",
     }

@@ -27,19 +27,49 @@ function Row({ label, value }) {
   )
 }
 
-function ScoreBar({ label, value, color }) {
-  const pct = Math.max(0, Math.min(100, (value / 10) * 100))
+// Vertical bar chart of the two scores (0-10 scale), drawn from the recalculated totals.
+function ScoreChart({ goScore, noGoScore, higher }) {
+  const bars = [
+    { key: 'Go', label: 'Go', value: goScore, color: 'bg-mint' },
+    { key: 'No-Go', label: 'No-Go', value: noGoScore, color: 'bg-violet' },
+  ]
+  const CHART_H = 140
   return (
-    <div className="mb-2">
-      <div className="flex justify-between text-xs mb-1">
-        <span className="text-fg2">{label}</span>
-        <span className="font-mono text-muted">{value}/10</span>
-      </div>
-      <div className="h-2 rounded-full bg-hover overflow-hidden">
-        <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
-      </div>
+    <div className="flex items-end justify-center gap-10 px-2 pt-2">
+      {bars.map((b) => {
+        const h = Math.max(4, Math.min(CHART_H, (b.value / 10) * CHART_H))
+        const winner = b.key === higher
+        return (
+          <div key={b.key} className="flex flex-col items-center w-20">
+            <span className={`font-mono text-sm mb-1 ${winner ? 'text-fg font-bold' : 'text-muted'}`}>
+              {b.value}
+            </span>
+            <div
+              className="w-full flex items-end border-b border-line"
+              style={{ height: CHART_H }}
+              role="img"
+              aria-label={`${b.label} score ${b.value} out of 10`}
+            >
+              <div
+                className={`w-full rounded-t-lg ${b.color} ${winner ? '' : 'opacity-60'} transition-all duration-700`}
+                style={{ height: h }}
+              />
+            </div>
+            <span className="text-xs text-fg2 mt-2">{b.label}</span>
+          </div>
+        )
+      })}
     </div>
   )
+}
+
+// The model's graph text is "Bar chart: Go X vs NoGo Y. note". Its numbers can be wrong,
+// so when we draw the chart ourselves we only keep the note after the first sentence.
+function graphNote(text) {
+  if (typeof text !== 'string') return ''
+  if (!/^\s*bar chart/i.test(text)) return text
+  const i = text.indexOf('. ')
+  return i === -1 ? '' : text.slice(i + 2).trim()
 }
 
 export default function FlrrcBoxes({ data }) {
@@ -89,21 +119,25 @@ export default function FlrrcBoxes({ data }) {
               {b2.formula}
             </p>
           )}
-          {hasScores && (
-            <>
-              <ScoreBar label="Go" value={goScore} color="bg-mint" />
-              <ScoreBar label="No-Go" value={noGoScore} color="bg-violet" />
-            </>
-          )}
           <Row label="Go score" value={b2.go_score} />
           <Row label="No-Go score" value={b2.nogo_score} />
           <Row label="Regret probability" value={b2.regret_probability} />
         </Box>
 
         <Box icon={BarChart3} title="3. Graph" tone="text-violet" delay={160}>
-          <p className="text-sm text-fg2 leading-relaxed">
-            {typeof data.box_3_graph === 'string' ? data.box_3_graph : JSON.stringify(data.box_3_graph)}
-          </p>
+          {hasScores ? (
+            <>
+              <ScoreChart goScore={goScore} noGoScore={noGoScore} higher={higher} />
+              <p className="text-[11px] text-dim text-center mt-3">Score out of 10, higher is better</p>
+              {graphNote(data.box_3_graph) && (
+                <p className="text-sm text-fg2 leading-relaxed mt-2">{graphNote(data.box_3_graph)}</p>
+              )}
+            </>
+          ) : (
+            <p className="text-sm text-fg2 leading-relaxed">
+              {typeof data.box_3_graph === 'string' ? data.box_3_graph : JSON.stringify(data.box_3_graph)}
+            </p>
+          )}
         </Box>
 
         <Box icon={ShieldAlert} title="4. Risk & Alternatives" tone="text-warn" delay={240}>

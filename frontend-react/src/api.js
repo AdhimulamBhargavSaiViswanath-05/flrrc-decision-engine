@@ -1,4 +1,4 @@
-const SPACE_CALL_URL = "https://bhargavsai2005-flrrc-v1-3.hf.space/gradio_api/call/decide"
+const SPACE_CALL_URL = "https://bhargavsai2005-flrrc-decision-engine.hf.space/gradio_api/call/decide"
 
 // Optional: set VITE_LOCAL_API_URL=http://localhost:8000 in .env.local to use the local FastAPI
 // (python3 -m uvicorn src.api:app --port 8000) instead of the Hugging Face Space.
