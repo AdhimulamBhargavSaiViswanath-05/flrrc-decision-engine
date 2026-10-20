@@ -218,14 +218,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
-models/*.bin
-models/*.safetensors
-models/flrrc-v1.3-lora/
 *.zip
 
-# LoRA adapters - keep config only, model in HF/Drive
-models/flrrc-v1.3-lora-final/*.safetensors
-models/flrrc-v1.3-lora-final/*.bin
-
-# v1.4 adapter lives on Hugging Face (bhargavsai2005/flrrc-v1.4-lora), not in git
-models/flrrc-v1.4-lora-final/
+# models/ is a local scratch folder for testing only. Adapters live on Hugging Face
+# (bhargavsai2005/flrrc-v1.4-lora), never in git.
+models/
