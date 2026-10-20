@@ -21,7 +21,7 @@ const EXAMPLES = [
 ]
 
 const HISTORY_KEY = 'flrrc-history-v1'
-const MODEL_URL = 'https://huggingface.co/bhargavsai2005/flrrc-v1.3-lora'
+const MODEL_URL = 'https://huggingface.co/bhargavsai2005/flrrc-v1.4-lora'
 
 function loadHistory() {
   try {
@@ -141,7 +141,7 @@ function AnswerCard({ item, isLast, busy, onRetry, onFollowUp, onGrow }) {
                 <RotateCcw size={15} />
               </ActionButton>
               <span className="ml-2 text-xs text-dim">
-                v1.3 POC, output not reliable yet. Final decision neethi.
+                v1.4 POC, scores and facts can be wrong. Final decision neethi.
               </span>
             </div>
 
@@ -413,7 +413,7 @@ function App() {
           >
             TinyLlama 1.1B + LoRA adapter
           </a>
-          <p>v1.3 POC</p>
+          <p>v1.4 POC</p>
         </div>
       </aside>
 
@@ -438,7 +438,7 @@ function App() {
               className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border border-line hover:border-cyan/50 text-fg2 transition"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-warn" />
-              v1.3 POC
+              v1.4 POC
             </a>
             <button
               onClick={toggleTheme}
